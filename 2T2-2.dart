@@ -1,4 +1,6 @@
 import 'dart:convert';
+import 'dart:typed_data';
+import 'package:crypto/crypto.dart'; // Pastikan menambahkan dependensi crypto
 
 BigInt modularExponentiation(BigInt keyBase, BigInt keyPrivate, BigInt keyMod) {
   return keyBase.modPow(keyPrivate, keyMod);
@@ -30,14 +32,22 @@ String encryptionEndToEnd(String keyPrivate, String keybase, String keyMod) {
 
   String randomAdminKey = "${publicKeyBigInt}";
 
-  String base64Key = convertToBase64(randomAdminKey);
-  return base64Key;
+  // Hash hasil publicKeyBigInt dengan SHA-256 untuk mendapatkan 32 byte
+  List<int> hashBytes = sha256.convert(utf8.encode(randomAdminKey)).bytes;
+
+  // Ambil 16 byte pertama dari hash yang dihasilkan
+  List<int> ivBytes = hashBytes.sublist(0, 16);
+
+  // Konversi 16 byte pertama menjadi string Base64
+  String base64Key = base64.encode(ivBytes);
+
+  return base64Key; // 16 byte = 22 karakter Base64
 }
 
 void main() {
-  String keyPrivate = "asdfsdfgdfgdfgdfgdfgdfgdfsdf";
+  String keyPrivate = "asdfsdfgdfgdfgdfgdfgddfgdfgfgdfsdf";
   String keyPrivate2 = "abdfsfsdfsdfgdfgdfgdfgdfgdfgdfgdfgddf";
-  
+
   // key mod dan base harus lebih kecil dari key private
   String keybase = "bdfgdfgdfgdfgdfgdfg";
   String keyMod = "cdfgdfgdfgddfgdfgdfg";
@@ -45,8 +55,6 @@ void main() {
   String keyResult = encryptionEndToEnd(keyPrivate, keybase, keyMod);
   String keyResult2 = encryptionEndToEnd(keyPrivate2, keybase, keyMod);
 
-  print("ini keyResutl $keyResult");
-  print("ini keyResutl $keyResult2");
-  
-  
+  print("ini keyResult $keyResult");
+  print("ini keyResult2 $keyResult2");
 }
