@@ -96,3 +96,90 @@ void main() {
 }
 
 
+
+
+// import 'dart:convert';
+// import 'dart:math';
+// import 'dart:typed_data';
+// import 'package:crypto/crypto.dart';
+
+// // Modular Exponentiation
+// BigInt modularExponentiation(BigInt base, BigInt exponent, BigInt modulus) {
+//   return base.modPow(exponent, modulus);
+// }
+
+// // Convert Base64 String to BigInt
+// BigInt convertKeyToBigInt(String key) {
+//   Uint8List bytes = base64.decode(key);
+//   BigInt result = BigInt.zero;
+//   for (int byte in bytes) {
+//     result = (result << 8) | BigInt.from(byte);
+//   }
+//   return result;
+// }
+
+// // Convert BigInt to Base64 String
+// String convertBigIntToBase64(BigInt value) {
+//   List<int> bytes = [];
+//   while (value > BigInt.zero) {
+//     bytes.insert(0, (value & BigInt.from(0xff)).toInt());
+//     value = value >> 8;
+//   }
+//   return base64.encode(Uint8List.fromList(bytes));
+// }
+
+// // Encryption End-to-End
+// String encryptionEndToEnd(String keyPrivate, String keyBase, String keyMod) {
+//   BigInt privateKey = convertKeyToBigInt(keyPrivate);
+//   BigInt base = convertKeyToBigInt(keyBase);
+//   BigInt modulus = convertKeyToBigInt(keyMod);
+
+//   BigInt publicKey = modularExponentiation(base, privateKey, modulus);
+//   return convertBigIntToBase64(publicKey);
+// }
+
+// // Decryption End-to-End
+// String decryptionEndToEnd(String keyPublic, String keyPrivate, String keyMod) {
+//   BigInt publicKey = convertKeyToBigInt(keyPublic);
+//   BigInt privateKey = convertKeyToBigInt(keyPrivate);
+//   BigInt modulus = convertKeyToBigInt(keyMod);
+
+//   BigInt sharedSecret = modularExponentiation(publicKey, privateKey, modulus);
+//   return convertBigIntToBase64(sharedSecret);
+// }
+
+// void main() {
+//   var random = Random.secure();
+//   var privateKey1 = List<int>.generate(16, (i) => random.nextInt(256));
+//   var privateKey2 = List<int>.generate(16, (i) => random.nextInt(256));
+//   var baseKey = List<int>.generate(12, (i) => random.nextInt(256));
+//   var modKey = List<int>.generate(20, (i) => random.nextInt(256));
+
+//   // Convert to Base64
+//   String keyPrivate1 = base64.encode(privateKey1);
+//   String keyPrivate2 = base64.encode(privateKey2);
+//   String keyBase = base64.encode(baseKey);
+//   String keyMod = base64.encode(modKey);
+
+//   print('Private Key 1: $keyPrivate1');
+//   print('Private Key 2: $keyPrivate2');
+//   print('Base Key: $keyBase');
+//   print('Mod Key: $keyMod');
+
+//   // Generate public keys
+//   String publicKey1 = encryptionEndToEnd(keyPrivate1, keyBase, keyMod);
+//   String publicKey2 = encryptionEndToEnd(keyPrivate2, keyBase, keyMod);
+
+//   print('Public Key 1: $publicKey1');
+//   print('Public Key 2: $publicKey2');
+
+//   // Generate shared secrets
+//   String sharedSecret1 = decryptionEndToEnd(publicKey2, keyPrivate1, keyMod);
+//   String sharedSecret2 = decryptionEndToEnd(publicKey1, keyPrivate2, keyMod);
+
+//   // Verify if shared secrets match
+//   print('\nShared Secret 1: $sharedSecret1');
+//   print('Shared Secret 2: $sharedSecret2');
+//   print('\nShared secrets match: ${sharedSecret1 == sharedSecret2}');
+// }
+
